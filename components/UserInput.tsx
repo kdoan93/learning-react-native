@@ -28,7 +28,7 @@ const UserInput = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Enter your username here"
-                value={user}
+                // value=''
                 onChangeText={newUser => fetchUser(newUser)}
             />
             <Text style={styles.text}>
