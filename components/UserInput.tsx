@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import { View, TextInput, Text, StyleSheet, Keyboard } from "react-native";
 
 const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
+    const [userInput, setUserInput] = useState('')
 
     async function fetchUser(user: string) {
         try {
@@ -19,23 +20,24 @@ const UserInput = () => {
         }
     }
 
-    // fetchUser('Jumbo_Wumbo')
-
-    console.log("user: ", user)
+    const handleSubmit = () => {
+        fetchUser(userInput)
+        Keyboard.dismiss()
+    }
 
     return (
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Enter your username here"
-                // value=''
-                onChangeText={newUser => fetchUser(newUser)}
+                value={userInput}
+                onChangeText={newUser => setUserInput(newUser)}
+                onSubmitEditing={handleSubmit}
+                returnKeyType="done"
             />
             <Text style={styles.text}>
-                {`
-                    User: ${user}
-                    User ID: ${userId}
-                `}
+                User: {user} {"\n"}
+                User ID: {userId}
             </Text>
         </View>
     )
@@ -56,6 +58,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
+        textAlign: 'left'
     }
 })
 
