@@ -20,7 +20,7 @@ const UserInput = () => {
             setUserId(userData.user_id)
 
             /*** Fetches all leagues user is in ***/
-            const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}/leagues/nfl/2024`)
+            const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
 
             let leagues = userLeagueData.map((league) => league.name)
@@ -34,7 +34,6 @@ const UserInput = () => {
 
     const handleSubmit = () => {
         fetchUserData(userInput)
-        // fetchUserLeagues(userId)
         Keyboard.dismiss()
     }
 
