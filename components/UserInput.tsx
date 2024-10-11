@@ -4,7 +4,7 @@ import { View, TextInput, Text, StyleSheet, Keyboard } from "react-native";
 const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
-    const [userLeague, setUserLeague] = useState([])
+    const [userLeague, setUserLeague] = useState<string[]>([])
     const [userInput, setUserInput] = useState('')
 
     type League = {
@@ -21,10 +21,11 @@ const UserInput = () => {
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}/leagues/nfl/2024`)
-            const userLeagueData = await userLeagueResponse.json()
-            console.log('User League userLeagueData: ', userLeagueData[0].name)
-            userLeagueData.map((league: string) => userLeague.push(league.name))
-            console.log("userLeague: ", userLeague)
+            const userLeagueData: League[] = await userLeagueResponse.json()
+
+            let leagues = userLeagueData.map((league) => league.name)
+            setUserLeague(leagues)
+            console.log("leagues: ", leagues)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
@@ -50,12 +51,10 @@ const UserInput = () => {
             <Text style={styles.text}>
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
-                User Leagues:
-                {userLeague.map(name =>
-                    <Text>
-                        {name}
-                    </Text>
-                )}
+                User Leagues:{"\n"}
+                {userLeague.map((name, index) => (
+                    <Text key={index}>  {name}{"\n"} </Text>
+                ))}
             </Text>
         </View>
     )
@@ -63,11 +62,13 @@ const UserInput = () => {
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: 'red',
-        borderWidth: 1,
+        // borderColor: 'red',
+        // borderWidth: 1,
+        height: 'auto',
         width: '90%',
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        marginTop: 40,
     },
     input: {
         height: 40,
