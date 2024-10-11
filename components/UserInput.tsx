@@ -4,16 +4,27 @@ import { View, TextInput, Text, StyleSheet, Keyboard } from "react-native";
 const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
+    const [userLeague, setUserLeague] = useState([])
     const [userInput, setUserInput] = useState('')
 
-    async function fetchUser(user: string) {
-        try {
-            const response = await fetch(`https://api.sleeper.app/v1/user/${user}`)
-            const data = await response.json()
-            setUser(data.display_name)
-            setUserId(data.user_id)
+    type League = {
+        name: string
+    }
 
-            console.log(data)
+    async function fetchUserData(user: string) {
+        try {
+            /***  Fetches user data ***/
+            const userResponse = await fetch(`https://api.sleeper.app/v1/user/${user}`)
+            const userData = await userResponse.json()
+            setUser(userData.display_name)
+            setUserId(userData.user_id)
+
+            /*** Fetches all leagues user is in ***/
+            const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}/leagues/nfl/2024`)
+            const userLeagueData = await userLeagueResponse.json()
+            console.log('User League userLeagueData: ', userLeagueData[0].name)
+            userLeagueData.map((league: string) => userLeague.push(league.name))
+            console.log("userLeague: ", userLeague)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
@@ -21,7 +32,8 @@ const UserInput = () => {
     }
 
     const handleSubmit = () => {
-        fetchUser(userInput)
+        fetchUserData(userInput)
+        // fetchUserLeagues(userId)
         Keyboard.dismiss()
     }
 
@@ -37,7 +49,13 @@ const UserInput = () => {
             />
             <Text style={styles.text}>
                 User: {user} {"\n"}
-                User ID: {userId}
+                User ID: {userId} {"\n"}
+                User Leagues:
+                {userLeague.map(name =>
+                    <Text>
+                        {name}
+                    </Text>
+                )}
             </Text>
         </View>
     )
@@ -45,9 +63,11 @@ const UserInput = () => {
 
 const styles = StyleSheet.create({
     container: {
+        borderColor: 'red',
+        borderWidth: 1,
+        width: '90%',
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 20,
     },
     input: {
         height: 40,
