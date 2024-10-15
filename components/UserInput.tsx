@@ -33,7 +33,8 @@ const UserInput = () => {
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
             const userAvatar = await avatarResponse.json()
-            console.log("userAvatar: ", userAvatar)
+            setAvatar(userAvatar)
+            // console.log("userAvatar: ", avatar)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
@@ -55,6 +56,7 @@ const UserInput = () => {
                 onSubmitEditing={handleSubmit}
                 returnKeyType="done"
             />
+            {/* <Image source={{uri: {avatar}}} /> */}
             <Text style={styles.text}>
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
