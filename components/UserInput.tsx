@@ -4,6 +4,7 @@ import { View, TextInput, Text, StyleSheet, Keyboard } from "react-native";
 const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
+    const [avatar, setAvatar] = useState('')
     const [userLeague, setUserLeague] = useState<string[]>([])
     const [userInput, setUserInput] = useState('')
 
@@ -18,8 +19,9 @@ const UserInput = () => {
             const userData = await userResponse.json()
             setUser(userData.display_name)
             setUserId(userData.user_id)
+            setAvatar(userData.avatar)
 
-            console.log("user: ", user)
+            console.log("userData: ", userData)
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
@@ -27,6 +29,11 @@ const UserInput = () => {
 
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
+
+            /***    Fetch user Avatar   ***/
+            const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
+            const userAvatar = await avatarResponse.json()
+            console.log("userAvatar: ", userAvatar)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
