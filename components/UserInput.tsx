@@ -19,13 +19,14 @@ const UserInput = () => {
             setUser(userData.display_name)
             setUserId(userData.user_id)
 
+            console.log("user: ", user)
+
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
 
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
-            console.log("leagues: ", leagues)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
@@ -52,7 +53,7 @@ const UserInput = () => {
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
                 {userLeague.map((name, index) => (
-                    <Text key={index}>  {name}{"\n"} </Text>
+                    <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
                 ))}
             </Text>
         </View>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         // borderColor: 'red',
         // borderWidth: 1,
         height: 'auto',
-        width: '90%',
+        width: '80%',
         flex: 1,
         justifyContent: 'flex-start',
         marginTop: 40,
