@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet, Keyboard } from "react-native";
+import { View, TextInput, Text, StyleSheet, Keyboard, Image } from "react-native";
 
 const UserInput = () => {
     const [user, setUser] = useState('')
@@ -19,9 +19,9 @@ const UserInput = () => {
             const userData = await userResponse.json()
             setUser(userData.display_name)
             setUserId(userData.user_id)
-            setAvatar(userData.avatar)
+            // setAvatar(userData.avatar)
 
-            console.log("userData: ", userData)
+            // console.log("userData: ", userData)
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
@@ -32,9 +32,7 @@ const UserInput = () => {
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
-            const userAvatar = await avatarResponse.json()
-            setAvatar(userAvatar)
-            // console.log("userAvatar: ", avatar)
+            setAvatar(avatarResponse.url)
 
         } catch (error) {
             console.error("Error fetching user data: ", error)
@@ -56,7 +54,8 @@ const UserInput = () => {
                 onSubmitEditing={handleSubmit}
                 returnKeyType="done"
             />
-            {/* <Image source={{uri: {avatar}}} /> */}
+            <Image  source={{ uri: avatar }}
+                    style={{ width: 50, height: 50 }} />
             <Text style={styles.text}>
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
