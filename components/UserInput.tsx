@@ -27,8 +27,14 @@ const UserInput = () => {
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
 
+            console.log("userLeagueData: ", userLeagueData)
+
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
+
+            const leagueUsersResponse = await fetch('https://api.sleeper.app/v1/league/1125536417976860672/rosters')
+            const leagueUsersData = await leagueUsersResponse.json()
+            console.log("leagueUsersData: ", leagueUsersData)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
