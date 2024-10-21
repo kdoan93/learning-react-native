@@ -60,8 +60,14 @@ const UserInput = () => {
                 onSubmitEditing={handleSubmit}
                 returnKeyType="done"
             />
-            <Image  source={{ uri: avatar }}
-                    style={{ width: 50, height: 50 }} />
+            { avatar ?
+                <View style={styles.imageContainer}>
+                    <Image
+                        style={styles.image}
+                        source={{ uri: avatar }}
+                    />
+                </View> : <></>
+            }
             <Text style={styles.text}>
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
@@ -78,11 +84,12 @@ const styles = StyleSheet.create({
     container: {
         // borderColor: 'red',
         // borderWidth: 1,
-        height: 'auto',
+        // height: 'auto',
         width: '80%',
         flex: 1,
         justifyContent: 'flex-start',
         marginTop: 40,
+        alignSelf: 'center',
     },
     input: {
         height: 40,
@@ -90,6 +97,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         paddingHorizontal: 10,
         marginBottom: 20,
+    },
+    imageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        width: 100,
+        height: 100,
     },
     text: {
         fontSize: 18,
