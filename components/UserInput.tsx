@@ -6,10 +6,15 @@ const UserInput = () => {
     const [userId, setUserId] = useState('')
     const [avatar, setAvatar] = useState('')
     const [userLeague, setUserLeague] = useState<string[]>([])
+    const [leagueUsers, setLeagueUsers] = useState<string[]>([])
     const [userInput, setUserInput] = useState('')
 
     type League = {
         name: string
+    }
+
+    type User = {
+        owner_id: string
     }
 
     async function fetchUserData(user: string) {
@@ -19,9 +24,9 @@ const UserInput = () => {
             const userData = await userResponse.json()
             setUser(userData.display_name)
             setUserId(userData.user_id)
-            // setAvatar(userData.avatar)
 
             // console.log("userData: ", userData)
+
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
@@ -32,8 +37,18 @@ const UserInput = () => {
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
 
+
+            /***    Fetches all users in a league   ***/
             const leagueUsersResponse = await fetch('https://api.sleeper.app/v1/league/1125536417976860672/rosters')
-            const leagueUsersData = await leagueUsersResponse.json()
+            const leagueUsersData: User[] = await leagueUsersResponse.json()
+            let usersInLeague = leagueUsersData.map((user) => user.owner_id)
+            setLeagueUsers(usersInLeague)
+            console.log("leagueUser: ", usersInLeague)
+            
+            // for (let i = 0; i < userLeagueData.length; i++) {
+
+            // }
+
             console.log("leagueUsersData: ", leagueUsersData)
 
             /***    Fetch user Avatar   ***/
@@ -74,6 +89,7 @@ const UserInput = () => {
                 User Leagues:{"\n"}
                 {userLeague.map((name, index) => (
                     <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
+                    // {leagueUserData}
                 ))}
             </Text>
         </View>
