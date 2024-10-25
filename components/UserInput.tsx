@@ -6,10 +6,13 @@ const UserInput = () => {
     const [userId, setUserId] = useState('')
     const [avatar, setAvatar] = useState('')
     const [userLeague, setUserLeague] = useState<string[]>([])
+    const [leagueUsers, setLeagueUsers] = useState<string[]>([])
     const [userInput, setUserInput] = useState('')
 
     type League = {
-        name: string
+        name: string,
+        index: number,
+        league_id: string
     }
 
     async function fetchUserData(user: string) {
@@ -19,13 +22,15 @@ const UserInput = () => {
             const userData = await userResponse.json()
             setUser(userData.display_name)
             setUserId(userData.user_id)
-            // setAvatar(userData.avatar)
 
             // console.log("userData: ", userData)
+
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
+
+            console.log("userLeagueData: ", userLeagueData)
 
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
@@ -66,8 +71,9 @@ const UserInput = () => {
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
-                {userLeague.map((name, index) => (
+                {userLeague.map((name, index, league_id) => (
                     <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
+                    // {leagueUserData}
                 ))}
             </Text>
         </View>
