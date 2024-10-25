@@ -10,11 +10,9 @@ const UserInput = () => {
     const [userInput, setUserInput] = useState('')
 
     type League = {
-        name: string
-    }
-
-    type User = {
-        owner_id: string
+        name: string,
+        index: number,
+        league_id: string
     }
 
     async function fetchUserData(user: string) {
@@ -36,20 +34,6 @@ const UserInput = () => {
 
             let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(leagues)
-
-
-            /***    Fetches all users in a league   ***/
-            const leagueUsersResponse = await fetch('https://api.sleeper.app/v1/league/1125536417976860672/rosters')
-            const leagueUsersData: User[] = await leagueUsersResponse.json()
-            let usersInLeague = leagueUsersData.map((user) => user.owner_id)
-            setLeagueUsers(usersInLeague)
-            console.log("leagueUser: ", usersInLeague)
-            
-            // for (let i = 0; i < userLeagueData.length; i++) {
-
-            // }
-
-            console.log("leagueUsersData: ", leagueUsersData)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
@@ -87,7 +71,7 @@ const UserInput = () => {
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
-                {userLeague.map((name, index) => (
+                {userLeague.map((name, index, league_id) => (
                     <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
                     // {leagueUserData}
                 ))}
