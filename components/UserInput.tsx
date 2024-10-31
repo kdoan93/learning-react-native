@@ -6,8 +6,8 @@ const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
     const [avatar, setAvatar] = useState('')
-    const [userLeague, setUserLeague] = useState<string[]>([])
-    const [leagueUsers, setLeagueUsers] = useState<string[]>([])
+    const [userLeague, setUserLeague] = useState<League[]>([])
+    const [leagueUsers, setLeagueUsers] = useState<string[]>([]) // may not need
     const [userInput, setUserInput] = useState('')
 
     type League = {
@@ -30,8 +30,8 @@ const UserInput = () => {
 
             console.log("userLeagueData: ", userLeagueData)
 
-            let leagues = userLeagueData.map((league) => league.name)
-            setUserLeague(leagues)
+            // let leagues = userLeagueData.map((league) => league.name)
+            setUserLeague(userLeagueData)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
@@ -69,10 +69,10 @@ const UserInput = () => {
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
-                {userLeague.map((name, index, league_id) => (
+                {userLeague.map(league => (
                     <li>
-                        <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
-                        <LeagueInfo leagueId={league_id} />
+                        <Text key={league.index}> {league.index + 1}.  {league.name}{"\n"} </Text>
+                        <LeagueInfo leagueId={league.league_id} />
                     </li>
                     // {leagueUserData}
                 ))}
