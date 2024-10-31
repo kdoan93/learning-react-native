@@ -28,10 +28,10 @@ const UserInput = () => {
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
 
-            console.log("userLeagueData: ", userLeagueData)
 
             // let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(userLeagueData)
+            console.log("userLeague: ", userLeague)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
@@ -69,12 +69,11 @@ const UserInput = () => {
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
-                {userLeague.map(league => (
+                {userLeague.map((league) => (
                     <li>
-                        <Text key={league.index}> {league.index + 1}.  {league.name}{"\n"} </Text>
+                        <Text key={league.index}> {league.index}.  {league.name}{"\n"} </Text>
                         <LeagueInfo leagueId={league.league_id} />
                     </li>
-                    // {leagueUserData}
                 ))}
             </Text>
         </View>
