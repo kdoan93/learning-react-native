@@ -31,7 +31,7 @@ const UserInput = () => {
 
             // let leagues = userLeagueData.map((league) => league.name)
             setUserLeague(userLeagueData)
-            console.log("userLeague: ", userLeague)
+            // console.log("userLeague: ", userLeague)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
@@ -71,7 +71,7 @@ const UserInput = () => {
                 User Leagues:{"\n"}
                 {userLeague.map((league) => (
                     <li>
-                        <Text key={league.index}> {league.index}.  {league.name}{"\n"} </Text>
+                        <Text key={league.index}> {league.name}{"\n"} </Text>
                         <LeagueInfo leagueId={league.league_id} />
                     </li>
                 ))}
