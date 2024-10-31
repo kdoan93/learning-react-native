@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Keyboard, Image } from "react-native";
+import LeagueInfo from "./LeagueInfo";
 
 const UserInput = () => {
     const [user, setUser] = useState('')
@@ -22,9 +23,6 @@ const UserInput = () => {
             const userData = await userResponse.json()
             setUser(userData.display_name)
             setUserId(userData.user_id)
-
-            // console.log("userData: ", userData)
-
 
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
@@ -72,7 +70,10 @@ const UserInput = () => {
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
                 {userLeague.map((name, index, league_id) => (
-                    <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
+                    <li>
+                        <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
+                        <LeagueInfo leagueId={league_id} />
+                    </li>
                     // {leagueUserData}
                 ))}
             </Text>
@@ -82,9 +83,6 @@ const UserInput = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // borderColor: 'red',
-        // borderWidth: 1,
-        // height: 'auto',
         width: '80%',
         flex: 1,
         justifyContent: 'flex-start',

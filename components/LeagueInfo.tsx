@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View } from "react-native"
+import { View, Text } from "react-native"
 
 export default function LeagueInfo(leagueId: string) {
     const [leagueUsers, setLeagueUsers] = useState<string[]>([])
@@ -28,8 +28,12 @@ export default function LeagueInfo(leagueId: string) {
         }
     }
 
+    // fetchLeagueUsers(leagueId)
+
 
     return (
-        <View>League Info component</View>
+        <div>
+            <Text>League Info component</Text>
+        </div>
     )
 }
