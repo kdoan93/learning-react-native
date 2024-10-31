@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Keyboard, Image } from "react-native";
+import LeagueInfo from "./LeagueInfo";
 
 const UserInput = () => {
     const [user, setUser] = useState('')
     const [userId, setUserId] = useState('')
     const [avatar, setAvatar] = useState('')
-    const [userLeague, setUserLeague] = useState<string[]>([])
-    const [leagueUsers, setLeagueUsers] = useState<string[]>([])
+    const [userLeague, setUserLeague] = useState<League[]>([])
+    const [leagueUsers, setLeagueUsers] = useState<string[]>([]) // may not need
     const [userInput, setUserInput] = useState('')
 
     type League = {
@@ -23,17 +24,14 @@ const UserInput = () => {
             setUser(userData.display_name)
             setUserId(userData.user_id)
 
-            // console.log("userData: ", userData)
-
-
             /*** Fetches all leagues user is in ***/
             const userLeagueResponse = await fetch(`https://api.sleeper.app/v1/user/${userData.user_id}/leagues/nfl/2024`)
             const userLeagueData: League[] = await userLeagueResponse.json()
 
-            console.log("userLeagueData: ", userLeagueData)
 
-            let leagues = userLeagueData.map((league) => league.name)
-            setUserLeague(leagues)
+            // let leagues = userLeagueData.map((league) => league.name)
+            setUserLeague(userLeagueData)
+            // console.log("userLeague: ", userLeague)
 
             /***    Fetch user Avatar   ***/
             const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userData.avatar}`)
@@ -71,9 +69,11 @@ const UserInput = () => {
                 User: {user} {"\n"}
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
-                {userLeague.map((name, index, league_id) => (
-                    <Text key={index}> {index + 1}.  {name}{"\n"} </Text>
-                    // {leagueUserData}
+                {userLeague.map((league) => (
+                    <li>
+                        <Text key={league.index}> {league.name}{"\n"} </Text>
+                        <LeagueInfo leagueId={league.league_id} />
+                    </li>
                 ))}
             </Text>
         </View>
@@ -82,9 +82,6 @@ const UserInput = () => {
 
 const styles = StyleSheet.create({
     container: {
-        // borderColor: 'red',
-        // borderWidth: 1,
-        // height: 'auto',
         width: '80%',
         flex: 1,
         justifyContent: 'flex-start',

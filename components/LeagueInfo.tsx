@@ -1,35 +1,70 @@
 import { useState } from "react"
-import { View } from "react-native"
+import { View, Text, Button } from "react-native"
 
-export default function LeagueInfo(leagueId: string) {
-    const [leagueUsers, setLeagueUsers] = useState<string[]>([])
+type LeagueInfoProps = {
+    leagueId: string;
+}
+
+export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
+    const [leagueUsers, setLeagueUsers] = useState<User[]>([])
 
     type User = {
-        owner_id: string
+        owner_id: string,
+        name: string,
+        userInfo: {
+            display_name: string
+        }
     }
 
-    async function fetchLeagueUsers(leagueId: string) {
+    /***    Function to retrieve all league users   ***/
+    async function fetchLeagueUsers() {
         try {
             /***    Fetches all users in a league   ***/
-            const leagueUsersResponse = await fetch('https://api.sleeper.app/v1/league/1125536417976860672/rosters')
+            const leagueUsersResponse = await fetch(`https://api.sleeper.app/v1/league/${leagueId}/rosters`)
             const leagueUsersData: User[] = await leagueUsersResponse.json()
-            let usersInLeague = leagueUsersData.map((user) => user.owner_id)
-            setLeagueUsers(usersInLeague)
-            console.log("leagueUser: ", usersInLeague)
 
+            /***    Fetch user info and add to user object  ***/
+            const addUsernametoUsers = await Promise.all(
+                leagueUsersData.map(async (user) => {
+                    let ownerName = await fetchUser(user.owner_id)
+                    user.userInfo = ownerName
+                    return { ...user }
+                })
+            )
+
+            setLeagueUsers(addUsernametoUsers)
             console.log("leagueUsersData: ", leagueUsersData)
-
-            // for (let i = 0; i < userLeagueData.length; i++) {
-
-            // }
 
         } catch (error) {
             console.error(error)
         }
     }
 
+    /***    function to retrieve each user info     ***/
+    async function fetchUser(userId: string) {
+        try {
+            const userResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}`)
+            const userResponseData = await userResponse.json()
+
+            return userResponseData
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     return (
-        <View>League Info component</View>
+        <div>
+            <Button
+                onPress={fetchLeagueUsers}
+                title='Show all users in this league'
+            />
+            {leagueUsers.map(user => (
+                <li>
+                    <Text>
+                        {user.userInfo.display_name}
+                    </Text>
+                </li>
+            ))}
+        </div>
     )
 }
