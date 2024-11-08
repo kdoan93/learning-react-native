@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View, Text, Button, StyleSheet, Image } from "react-native"
+import { View, Text, Button, StyleSheet, Image, ScrollView } from "react-native"
 
 type LeagueInfoProps = {
     leagueId: string;
@@ -69,17 +69,19 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                 onPress={fetchLeagueUsers}
                 title='Show all users in this league'
             />
-            {leagueUsers.map(user => (
-                <li style={styles.leagueUsers}>
-                    <Image
-                        style={styles.image}
-                        source={{ uri: user.avatar }}
-                    />
-                    <Text>
-                        {user.userInfo.display_name}
-                    </Text>
-                </li>
-            ))}
+            {/* <ScrollView> */}
+                {leagueUsers.map(user => (
+                    <li style={styles.leagueUsers}>
+                        <Image
+                            style={styles.image}
+                            source={{ uri: user.avatar }}
+                            />
+                        <Text>
+                            {user.userInfo.display_name}
+                        </Text>
+                    </li>
+                ))}
+            {/* </ScrollView> */}
         </div>
     )
 }
