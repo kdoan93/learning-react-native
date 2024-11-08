@@ -70,7 +70,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                 title='Show all users in this league'
             />
             {leagueUsers.map(user => (
-                <li>
+                <li style={styles.leagueUsers}>
                     <Image
                         style={styles.image}
                         source={{ uri: user.avatar }}
@@ -85,6 +85,11 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
 }
 
 const styles = StyleSheet.create({
+    leagueUsers: {
+        marginTop: 10,
+        marginLeft: 20,
+        marginBottom: 10,
+    },
     image: {
         width: 20,
         height: 20,
