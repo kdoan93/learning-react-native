@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { View, Text, Button } from "react-native"
+import { View, Text, Button, StyleSheet, Image } from "react-native"
 
 type LeagueInfoProps = {
     leagueId: string;
@@ -7,13 +7,16 @@ type LeagueInfoProps = {
 
 export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
     const [leagueUsers, setLeagueUsers] = useState<User[]>([])
+    const [avatar, setAvatar] = useState('')
 
     type User = {
         owner_id: string,
         name: string,
         userInfo: {
-            display_name: string
+            display_name: string,
+            avatar: string,
         }
+        avatar: string
     }
 
     /***    Function to retrieve all league users   ***/
@@ -26,8 +29,11 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             /***    Fetch user info and add to user object  ***/
             const addUsernametoUsers = await Promise.all(
                 leagueUsersData.map(async (user) => {
+                    console.log("USER: ", user)
                     let ownerName = await fetchUser(user.owner_id)
                     user.userInfo = ownerName
+                    const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${user.userInfo.avatar}`)
+                    user.avatar = avatarResponse.url
                     return { ...user }
                 })
             )
@@ -46,6 +52,11 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             const userResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}`)
             const userResponseData = await userResponse.json()
 
+            /***    Fetches user avatar     ***/
+            const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${userResponseData.avatar}`)
+            // console.log(avatarResponse.url)
+            setAvatar(avatarResponse.url)
+
             return userResponseData
         } catch (error) {
             console.error(error)
@@ -63,8 +74,19 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                     <Text>
                         {user.userInfo.display_name}
                     </Text>
+                    <Image
+                        style={styles.image}
+                        source={{ uri: user.avatar }}
+                    />
                 </li>
             ))}
         </div>
     )
 }
+
+const styles = StyleSheet.create({
+    image: {
+        width: 100,
+        height: 100
+    }
+})
