@@ -71,13 +71,13 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             />
             {leagueUsers.map(user => (
                 <li>
-                    <Text>
-                        {user.userInfo.display_name}
-                    </Text>
                     <Image
                         style={styles.image}
                         source={{ uri: user.avatar }}
                     />
+                    <Text>
+                        {user.userInfo.display_name}
+                    </Text>
                 </li>
             ))}
         </div>
@@ -87,6 +87,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
 const styles = StyleSheet.create({
     image: {
         width: 20,
-        height: 20
+        height: 20,
+        
     }
 })
