@@ -86,7 +86,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
 
 const styles = StyleSheet.create({
     image: {
-        width: 100,
-        height: 100
+        width: 20,
+        height: 20
     }
 })
