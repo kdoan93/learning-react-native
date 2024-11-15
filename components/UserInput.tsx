@@ -72,7 +72,7 @@ const UserInput = () => {
                 User ID: {userId} {"\n"}
                 User Leagues:{"\n"}
                 {userLeague.map((league) => (
-                    <ul>
+                    <ul key={league.league_id}>
                         <Text key={league.index}> {league.name}{"\n"} </Text>
                         <LeagueInfo leagueId={league.league_id} />
                     </ul>
