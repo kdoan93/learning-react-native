@@ -16,7 +16,8 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             display_name: string,
             avatar: string,
         }
-        avatar: string
+        avatar: string,
+        roster_id: number
     }
 
     /***    Function to retrieve all league users   ***/
@@ -46,6 +47,8 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
         }
     }
 
+    console.log("LeagueInfo leagueUser: ", leagueUsers)
+
     /***    function to retrieve each user info     ***/
     async function fetchUser(userId: string) {
         try {
@@ -71,7 +74,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             />
             {/* <ScrollView> */}
                 {leagueUsers.map(user => (
-                    <li style={styles.leagueUsers}>
+                    <li key={user.roster_id} style={styles.leagueUsers}>
                         <Image
                             style={styles.image}
                             source={{ uri: user.avatar }}
