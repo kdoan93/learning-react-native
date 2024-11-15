@@ -30,7 +30,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             /***    Fetch user info and add to user object  ***/
             const addUsernametoUsers = await Promise.all(
                 leagueUsersData.map(async (user) => {
-                    console.log("USER: ", user)
+                    // console.log("USER: ", user)
                     let ownerName = await fetchUser(user.owner_id)
                     user.userInfo = ownerName
                     const avatarResponse = await fetch(`https://sleepercdn.com/avatars/thumbs/${user.userInfo.avatar}`)
@@ -40,14 +40,14 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
             )
 
             setLeagueUsers(addUsernametoUsers)
-            console.log("leagueUsersData: ", leagueUsersData)
+            // console.log("leagueUsersData: ", leagueUsersData)
 
         } catch (error) {
             console.error(error)
         }
     }
 
-    console.log("LeagueInfo leagueUser: ", leagueUsers)
+    // console.log("LeagueInfo leagueUser: ", leagueUsers)
 
     /***    function to retrieve each user info     ***/
     async function fetchUser(userId: string) {

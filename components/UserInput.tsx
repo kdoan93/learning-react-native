@@ -47,7 +47,7 @@ const UserInput = () => {
         Keyboard.dismiss()
     }
 
-    console.log("UserInput userLeague: ", userLeague)
+    // console.log("UserInput userLeague: ", userLeague)
 
     return (
         <View style={styles.container}>
