@@ -1,32 +1,34 @@
-import { useState } from 'react'
-import { Text, View } from 'react-native'
+import { useState, useEffect } from 'react';
+import { Text, View } from 'react-native';
 
 type UserInfoProps = {
-    userId: string
-}
+    userId: string;
+};
 
-export default function FetchUser({ userId }: UserInfoProps) {
-    const [user, setUser] = useState<User[]>([])
+type User = {
+    username: string;
+};
 
-    type User = {
-        username: string,
-    }
+export default function FetchUserData({ userId }: UserInfoProps) {
+    const [user, setUser] = useState<User | null>(null);
 
-    async function fetchUser() {
-        try {
-            const userResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}`)
-            const userResponseData: User[] = await userResponse.json()
-            console.log("FetchUser: ", userResponseData)
-            setUser(userResponseData)
-        } catch (error) {
-            console.error(error)
+    useEffect(() => {
+        async function fetchUser() {
+            try {
+                const userResponse = await fetch(`https://api.sleeper.app/v1/user/${userId}`);
+                const userResponseData: User = await userResponse.json();
+                console.log("FetchUser: ", userResponseData);
+                setUser(userResponseData);
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
-    fetchUser()
+        fetchUser();
+    }, [userId]);
 
     return (
         <View>
-            <Text>{user.username}</Text>
+            {user ? <Text>{user.username}</Text> : <Text>Loading...</Text>}
         </View>
-    )
+    );
 }
