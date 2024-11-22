@@ -83,7 +83,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                         <Text>
                             {user.userInfo.display_name}
                         </Text>
-                        <FetchUserData userId={user.owner_id} />
+                        {/* <FetchUserData userId={user.owner_id} /> */}
                     </li>
                 ))}
             {/* </ScrollView> */}
