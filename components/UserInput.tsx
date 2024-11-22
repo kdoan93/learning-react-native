@@ -67,11 +67,12 @@ const UserInput = () => {
                         style={styles.image}
                         source={{ uri: avatar }}
                     />
-                        <Text>
-                            User: {user} {"\n"}
-                            User ID: {userId} {"\n"}
-                        </Text>
-                </View> : <View>
+                    <Text>
+                        User: {user} {"\n"}
+                        User ID: {userId} {"\n"}
+                    </Text>
+                </View> :
+                <View>
                     <Image
                         style={styles.image}
                         source={{ uri: noAvatarImg }}
@@ -81,7 +82,7 @@ const UserInput = () => {
                 </View>
             }
             <Text style={styles.text}>
-                {user}'s Leagues:{"\n"}
+                {user}'s League(s):{"\n"}
                 {userLeague.map((league) => (
                     <ul key={league.league_id}>
                         <Text key={league.index}> {league.name}{"\n"} </Text>
