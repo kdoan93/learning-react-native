@@ -10,6 +10,8 @@ const UserInput = () => {
     const [leagueUsers, setLeagueUsers] = useState<string[]>([]) // may not need
     const [userInput, setUserInput] = useState('')
 
+    const noAvatarImg = 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.webp'
+
     type League = {
         name: string,
         index: number,
@@ -65,12 +67,21 @@ const UserInput = () => {
                         style={styles.image}
                         source={{ uri: avatar }}
                     />
-                </View> : <></>
+                        <Text>
+                            User: {user} {"\n"}
+                            User ID: {userId} {"\n"}
+                        </Text>
+                </View> : <View>
+                    <Image
+                        style={styles.image}
+                        source={{ uri: noAvatarImg }}
+                    />
+                    User: {user} {"\n"}
+                    User ID: {userId} {"\n"}
+                </View>
             }
             <Text style={styles.text}>
-                User: {user} {"\n"}
-                User ID: {userId} {"\n"}
-                User Leagues:{"\n"}
+                {user}'s Leagues:{"\n"}
                 {userLeague.map((league) => (
                     <ul key={league.league_id}>
                         <Text key={league.index}> {league.name}{"\n"} </Text>
@@ -98,8 +109,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     imageContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderColor: 'gray',
+        borderWidth: 1,
+        alignContent: 'center',
+        flexDirection: 'row',
+        marginBottom: 20,
     },
     image: {
         width: 100,
