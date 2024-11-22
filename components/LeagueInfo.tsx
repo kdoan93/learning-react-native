@@ -79,7 +79,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                         <Image
                             style={styles.image}
                             source={{ uri: user.avatar }}
-                            />
+                        />
                         <Text>
                             {user.userInfo.display_name}
                         </Text>
