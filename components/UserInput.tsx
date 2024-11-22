@@ -9,6 +9,7 @@ const UserInput = () => {
     const [userLeague, setUserLeague] = useState<League[]>([])
     const [leagueUsers, setLeagueUsers] = useState<string[]>([]) // may not need
     const [userInput, setUserInput] = useState('')
+    const [buttonPushed, setButtonPushed] = useState(false)
 
     const noAvatarImg = 'https://t4.ftcdn.net/jpg/03/59/58/91/360_F_359589186_JDLl8dIWoBNf1iqEkHxhUeeOulx0wOC5.webp'
 
@@ -46,6 +47,7 @@ const UserInput = () => {
 
     const handleSubmit = () => {
         fetchUserData(userInput)
+        setButtonPushed(true)
         Keyboard.dismiss()
     }
 
@@ -61,7 +63,8 @@ const UserInput = () => {
                 onSubmitEditing={handleSubmit}
                 returnKeyType="done"
             />
-            { avatar ?
+            { buttonPushed ?
+            <View>
                 <View style={styles.imageContainer}>
                     <Image
                         style={styles.image}
@@ -71,25 +74,18 @@ const UserInput = () => {
                         User: {user} {"\n"}
                         User ID: {userId} {"\n"}
                     </Text>
-                </View> :
-                <View>
-                    <Image
-                        style={styles.image}
-                        source={{ uri: noAvatarImg }}
-                    />
-                    User: {user} {"\n"}
-                    User ID: {userId} {"\n"}
                 </View>
-            }
-            <Text style={styles.text}>
-                {user}'s League(s):{"\n"}
-                {userLeague.map((league) => (
-                    <ul key={league.league_id}>
-                        <Text key={league.index}> {league.name}{"\n"} </Text>
-                        <LeagueInfo leagueId={league.league_id} />
-                    </ul>
-                ))}
-            </Text>
+
+                <Text style={styles.text}>
+                    {user}'s League(s):{"\n"}
+                    {userLeague.map((league) => (
+                        <ul key={league.league_id}>
+                            <Text key={league.index}> {league.name}{"\n"} </Text>
+                            <LeagueInfo leagueId={league.league_id} />
+                        </ul>
+                    ))}
+                </Text>
+            </View> : <></> }
         </View>
     )
 }

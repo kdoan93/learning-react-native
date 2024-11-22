@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { View, Text, Button, StyleSheet, Image, ScrollView } from "react-native"
+import FetchUser from "./FetchUser";
 
 type LeagueInfoProps = {
     leagueId: string;
@@ -82,6 +83,7 @@ export default function LeagueInfo({ leagueId }: LeagueInfoProps) {
                         <Text>
                             {user.userInfo.display_name}
                         </Text>
+                        <FetchUser userId={user.owner_id} />
                     </li>
                 ))}
             {/* </ScrollView> */}
